@@ -20,9 +20,10 @@ def home():
 
 @app.route('/start')
 def start():
-    global logger
-    logger = Logger()
-    logger.start()
+    if logger is None:
+        global logger
+        logger = Logger()
+        logger.start()
 
     return redirect(url_for('home'))
 
@@ -41,5 +42,5 @@ if __name__ == '__main__':
     app.run(
         debug=True,
         host='0.0.0.0',
-        port=80
+        port=5000
     )
