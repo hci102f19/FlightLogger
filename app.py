@@ -1,26 +1,45 @@
-import json
-from time import time, sleep
+from flask import Flask, url_for, redirect
 
-from gpio.Sensors import Sensors
+from logger import Logger
 
-s = Sensors()
-s.start()
+app = Flask(__name__)
 
-start_time = time()
-points = []
+logger = None
 
-try:
-    while True:
-        data = s.emit()
-        sleep(0.1)
-        frame_time = time() - start_time
 
-        points.append({
-            'data': data,
-            'time': frame_time
-        })
+@app.route('/')
+def home():
+    status = 'Running' if logger is not None else 'Stopped'
 
-        with open('data.json', 'w') as f:
-            json.dump(points, f, indent=4)
-except KeyboardInterrupt:
-    s.stop()
+    html = f"<span>Status: {status}</span><br/>"
+    html += f"<a href=\"{url_for('start')}\">Start</a> | "
+    html += f"<a href=\"{url_for('stop')}\">Stop</a>"
+
+    return html
+
+
+@app.route('/start')
+def start():
+    global logger
+    logger = Logger()
+    logger.start()
+
+    return redirect(url_for('home'))
+
+
+@app.route('/stop')
+def stop():
+    global logger
+    if logger is not None:
+        logger.stop()
+        logger = None
+
+    return redirect(url_for('home'))
+
+
+if __name__ == '__main__':
+    app.run(
+        debug=True,
+        host='0.0.0.0',
+        port=80
+    )
