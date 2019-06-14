@@ -11,7 +11,7 @@ class Logger(threading.Thread):
         self.s = Sensors()
         self.s.start()
 
-        self.filename = f'data_{time()}.json'
+        self.filename = 'data_{}.json'.format(time())
 
         self.start_time = time()
         self.points = []

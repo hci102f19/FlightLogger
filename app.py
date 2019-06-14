@@ -11,9 +11,9 @@ logger = None
 def home():
     status = 'Running' if logger is not None else 'Stopped'
 
-    html = f"<span>Status: {status}</span><br/>"
-    html += f"<a href=\"{url_for('start')}\">Start</a> | "
-    html += f"<a href=\"{url_for('stop')}\">Stop</a>"
+    html = "<span>Status: {}</span><br/>".format(status)
+    html += "<a href=\"{}\">Start</a> | ".format(url_for('start'))
+    html += "<a href=\"{}\">Stop</a>".format(url_for('stop'))
 
     return html
 
