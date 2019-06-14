@@ -11,6 +11,8 @@ class Logger(threading.Thread):
         self.s = Sensors()
         self.s.start()
 
+        self.filename = f'data_{time()}.json'
+
         self.start_time = time()
         self.points = []
 
@@ -26,7 +28,7 @@ class Logger(threading.Thread):
                 'time': frame_time
             })
 
-            with open('data.json', 'w') as f:
+            with open(self.filename, 'w') as f:
                 json.dump(self.points, f)
 
             sleep(0.075)
