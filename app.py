@@ -10,14 +10,17 @@ start_time = time()
 points = []
 
 while True:
-    data = s.emit()
-    sleep(0.1)
-    frame_time = time() - start_time
+    try:
+        data = s.emit()
+        sleep(0.1)
+        frame_time = time() - start_time
 
-    points.append({
-        'data': data,
-        'time': frame_time
-    })
+        points.append({
+            'data': data,
+            'time': frame_time
+        })
 
-    with open('data.json', 'w') as f:
-        json.dump(points, f, indent=4)
+        with open('data.json', 'w') as f:
+            json.dump(points, f, indent=4)
+    except KeyboardInterrupt:
+        s.stop()

@@ -30,7 +30,7 @@ class Sensors(threading.Thread):
             sleep(0.1)
 
     def emit(self):
-        return json.dumps(self.values)
+        return self.values
 
     def stop(self):
         for s in self.sensors:
